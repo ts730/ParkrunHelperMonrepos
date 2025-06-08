@@ -256,7 +256,7 @@
         th {
             background: #667eea;
             color: white;
-            padding: 15px;
+            padding: 15px 10px;
             text-align: left;
             font-weight: 600;
             font-size: 14px;
@@ -264,8 +264,16 @@
             letter-spacing: 0.5px;
         }
 
+        th:first-child {
+            width: 25%;
+        }
+
+        th:last-child {
+            width: 75%;
+        }
+
         td {
-            padding: 12px 15px;
+            padding: 12px 10px;
             border-bottom: 1px solid #f1f5f9;
         }
 
@@ -277,11 +285,13 @@
             font-weight: 600;
             color: #4a5568;
             white-space: nowrap;
-            width: 30%;
+            width: 25%;
+            padding-right: 5px;
         }
 
         .helper-cell {
-            width: 70%;
+            width: 75%;
+            padding-left: 5px;
         }
 
         .input-group {
@@ -686,17 +696,21 @@
             }
 
             th, td {
-                padding: 10px 8px;
-                font-size: 13px;
+                padding: 8px 5px;
+                font-size: 12px;
             }
 
             .role-cell {
-                font-size: 12px;
-                width: 35%;
+                font-size: 11px;
+                width: 20% !important;
+                padding-right: 3px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .helper-cell {
-                width: 65%;
+                width: 80% !important;
+                padding-left: 3px;
             }
 
             .helper-select {
