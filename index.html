@@ -28,6 +28,15 @@
             backdrop-filter: blur(10px);
         }
 
+        /* Page navigation */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -74,6 +83,45 @@
             background: rgba(102, 126, 234, 0.2);
         }
 
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 10px 20px;
+            background: #5a67d8;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: #4c51bf;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(90, 103, 216, 0.3);
+        }
+
+        .back-btn {
+            width: auto;
+            padding: 10px 20px;
+            background: #718096;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #4a5568;
+        }
+
         .manage-helpers-btn {
             padding: 10px 20px;
             background: #5a67d8;
@@ -98,7 +146,7 @@
         }
 
         .week-selector {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         select {
@@ -116,6 +164,52 @@
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Missing positions alert */
+        .missing-positions-alert {
+            background: #fff5f5;
+            border: 2px solid #feb2b2;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .missing-alert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #c53030;
+            font-weight: 600;
+        }
+
+        .missing-positions-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .missing-position-chip {
+            background: #e53e3e;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .all-filled-message {
+            background: #e6fffa;
+            border: 2px solid #48bb78;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #22543d;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .volunteer-table {
@@ -164,21 +258,6 @@
             align-items: center;
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
         .helper-select {
             width: calc(100% - 40px);
             padding: 8px 10px;
@@ -208,6 +287,7 @@
             background: #c53030;
         }
 
+        /* Team summary page styles */
         .team-summary {
             background: white;
             border-radius: 15px;
@@ -220,31 +300,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
             border-bottom: 2px solid #f1f5f9;
         }
 
         .summary-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #2d3748;
         }
 
         .summary-stats {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             align-items: center;
         }
 
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .stat-number {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 700;
         }
 
@@ -259,19 +339,21 @@
         .stat-label {
             font-size: 0.875rem;
             color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .positions-grid {
             display: grid;
             gap: 12px;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .position-item {
             display: flex;
             align-items: center;
-            padding: 12px 16px;
-            border-radius: 10px;
+            padding: 15px 20px;
+            border-radius: 12px;
             background: #f7fafc;
             border: 2px solid transparent;
             transition: all 0.3s ease;
@@ -288,17 +370,17 @@
         }
 
         .position-icon {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
+            width: 32px;
+            height: 32px;
+            margin-right: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .position-icon svg {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
         }
 
         .position-filled svg {
@@ -316,13 +398,13 @@
         .position-role {
             font-weight: 600;
             color: #2d3748;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .position-helper {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #718096;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         .position-missing .position-helper {
@@ -449,6 +531,10 @@
         .helper-form input {
             flex: 1;
             min-width: 150px;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
         }
 
         .add-helper-btn {
@@ -555,6 +641,11 @@
             .helper-form input {
                 width: 100%;
             }
+
+            .summary-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
 
         .toast {
@@ -579,70 +670,109 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                    <path d="M2 17l10 5 10-5"/>
-                    <path d="M2 12l10 5 10-5"/>
-                </svg>
-                <span data-i18n="title">Parkrun Helper Organizer</span>
-            </h1>
-            <div class="language-switcher">
-                <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
-                <button class="lang-btn" onclick="setLanguage('de')">DE</button>
+        <!-- Main Page -->
+        <div id="mainPage" class="page active">
+            <div class="header">
+                <h1>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <span data-i18n="title">Parkrun Helper Organizer</span>
+                </h1>
+                <div class="language-switcher">
+                    <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+                    <button class="lang-btn" onclick="setLanguage('de')">DE</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn manage-helpers-btn" onclick="openHelperModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="8.5" cy="7" r="4"/>
+                        <line x1="20" y1="8" x2="20" y2="14"/>
+                        <line x1="23" y1="11" x2="17" y2="11"/>
+                    </svg>
+                    <span data-i18n="manageHelpers">Manage Helpers</span>
+                </button>
+                <button class="nav-btn" onclick="showTeamView()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="8.5" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span data-i18n="viewTeam">View Team</span>
+                </button>
+            </div>
+
+            <div class="week-selector">
+                <select id="weekSelect" onchange="loadWeekData()">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+
+            <div id="missingPositionsAlert">
+                <!-- Missing positions alert will be populated here -->
+            </div>
+
+            <div class="volunteer-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="activity">Activity</th>
+                            <th data-i18n="helper">Helper</th>
+                        </tr>
+                    </thead>
+                    <tbody id="volunteerTableBody">
+                        <!-- Rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="actions">
+                <button class="export-btn" onclick="exportToEmail()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <span data-i18n="exportEmail">Export to Email</span>
+                </button>
+                <button class="clear-btn" onclick="clearWeekData()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    <span data-i18n="clearWeek">Clear Week</span>
+                </button>
             </div>
         </div>
 
-        <button class="manage-helpers-btn" onclick="openHelperModal()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                <circle cx="8.5" cy="7" r="4"/>
-                <line x1="20" y1="8" x2="20" y2="14"/>
-                <line x1="23" y1="11" x2="17" y2="11"/>
-            </svg>
-            <span data-i18n="manageHelpers">Manage Helpers</span>
-        </button>
-
-        <div class="week-selector">
-            <select id="weekSelect" onchange="loadWeekData()">
-                <!-- Options will be populated by JavaScript -->
-            </select>
-        </div>
-
-        <div class="volunteer-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th data-i18n="activity">Activity</th>
-                        <th data-i18n="helper">Helper</th>
-                    </tr>
-                </thead>
-                <tbody id="volunteerTableBody">
-                    <!-- Rows will be populated by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-
-        <div class="team-summary" id="teamSummary">
-            <!-- Team summary will be populated here -->
-        </div>
-
-        <div class="actions">
-            <button class="export-btn" onclick="exportToEmail()">
+        <!-- Team View Page -->
+        <div id="teamPage" class="page">
+            <button class="nav-btn back-btn" onclick="showMainView()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                    <polyline points="22,6 12,13 2,6"/>
+                    <line x1="19" y1="12" x2="5" y2="12"/>
+                    <polyline points="12 19 5 12 12 5"/>
                 </svg>
-                <span data-i18n="exportEmail">Export to Email</span>
+                <span data-i18n="back">Back</span>
             </button>
-            <button class="clear-btn" onclick="clearWeekData()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
-                <span data-i18n="clearWeek">Clear Week</span>
-            </button>
+
+            <div class="team-summary" id="teamSummary">
+                <!-- Team summary will be populated here -->
+            </div>
+
+            <div class="actions">
+                <button class="export-btn" onclick="exportToEmail()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <span data-i18n="exportEmail">Export to Email</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -685,6 +815,8 @@
                 parkrunId: "Parkrun ID",
                 helper: "Helper",
                 manageHelpers: "Manage Helpers",
+                viewTeam: "View Team",
+                back: "Back",
                 addHelper: "Add Helper",
                 exportEmail: "Export to Email",
                 clearWeek: "Clear Week",
@@ -704,6 +836,8 @@
                 filled: "Filled",
                 missing: "Missing",
                 positionMissing: "Helper needed",
+                missingPositions: "Missing positions",
+                allPositionsFilled: "All positions filled!",
                 roles: {
                     'Event Director': 'Event Director',
                     'Run Director': 'Run Director',
@@ -729,6 +863,8 @@
                 parkrunId: "Parkrun ID",
                 helper: "Helfer",
                 manageHelpers: "Helfer verwalten",
+                viewTeam: "Team anzeigen",
+                back: "Zurück",
                 addHelper: "Helfer hinzufügen",
                 exportEmail: "Per E-Mail senden",
                 clearWeek: "Woche löschen",
@@ -748,6 +884,8 @@
                 filled: "Besetzt",
                 missing: "Fehlt",
                 positionMissing: "Helfer benötigt",
+                missingPositions: "Fehlende Positionen",
+                allPositionsFilled: "Alle Positionen besetzt!",
                 roles: {
                     'Event Director': 'Veranstaltungsleiter',
                     'Run Director': 'Laufleiter',
@@ -793,6 +931,18 @@
         // Initialize data storage
         let parkrunData = {};
         let helpersDatabase = {};
+
+        // Page navigation
+        function showMainView() {
+            document.getElementById('mainPage').classList.add('active');
+            document.getElementById('teamPage').classList.remove('active');
+        }
+
+        function showTeamView() {
+            document.getElementById('mainPage').classList.remove('active');
+            document.getElementById('teamPage').classList.add('active');
+            updateTeamSummary();
+        }
 
         // Load language preference
         function loadLanguagePreference() {
@@ -970,6 +1120,52 @@
             });
         }
 
+        // Update missing positions alert
+        function updateMissingPositionsAlert() {
+            const selectedWeek = document.getElementById('weekSelect').value;
+            const weekData = parkrunData[selectedWeek] || {};
+            
+            const missingRoles = [];
+            volunteerRoles.forEach(role => {
+                if (!weekData[role] || !weekData[role].helperId) {
+                    missingRoles.push(role);
+                }
+            });
+            
+            const alertContainer = document.getElementById('missingPositionsAlert');
+            
+            if (missingRoles.length === 0) {
+                alertContainer.innerHTML = `
+                    <div class="all-filled-message">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        ${translations[currentLanguage].allPositionsFilled}
+                    </div>
+                `;
+            } else {
+                const missingChips = missingRoles.map(role => 
+                    `<div class="missing-position-chip">${getTranslatedRole(role)}</div>`
+                ).join('');
+                
+                alertContainer.innerHTML = `
+                    <div class="missing-positions-alert">
+                        <div class="missing-alert-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                            ${translations[currentLanguage].missingPositions} (${missingRoles.length})
+                        </div>
+                        <div class="missing-positions-list">
+                            ${missingChips}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         // Load data for selected week
         function loadWeekData() {
             const selectedWeek = document.getElementById('weekSelect').value;
@@ -981,7 +1177,7 @@
                 select.value = weekData[role]?.helperId || '';
             });
             
-            updateTeamSummary();
+            updateMissingPositionsAlert();
         }
 
         // Update team summary
@@ -1077,7 +1273,7 @@
             }
             
             saveToStorage();
-            updateTeamSummary();
+            updateMissingPositionsAlert();
         }
 
         // Clear helper for a role
