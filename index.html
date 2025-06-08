@@ -208,6 +208,128 @@
             background: #c53030;
         }
 
+        .team-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .summary-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-filled {
+            color: #48bb78;
+        }
+
+        .stat-missing {
+            color: #e53e3e;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+        }
+
+        .positions-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .position-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: #f7fafc;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .position-item.filled {
+            background: #e6fffa;
+            border-color: #48bb78;
+        }
+
+        .position-item.missing {
+            background: #fff5f5;
+            border-color: #feb2b2;
+        }
+
+        .position-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .position-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .position-filled svg {
+            stroke: #48bb78;
+        }
+
+        .position-missing svg {
+            stroke: #e53e3e;
+        }
+
+        .position-details {
+            flex: 1;
+        }
+
+        .position-role {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+
+        .position-helper {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        .position-missing .position-helper {
+            color: #e53e3e;
+            font-style: italic;
+        }
+
         .actions {
             display: flex;
             gap: 10px;
@@ -502,6 +624,10 @@
             </table>
         </div>
 
+        <div class="team-summary" id="teamSummary">
+            <!-- Team summary will be populated here -->
+        </div>
+
         <div class="actions">
             <button class="export-btn" onclick="exportToEmail()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -574,6 +700,10 @@
                 helperDeleted: "Helper deleted!",
                 fillBothFields: "Please fill in both name and ID fields!",
                 noHelpers: "No helpers added yet. Add your first helper above!",
+                teamOverview: "Team Overview",
+                filled: "Filled",
+                missing: "Missing",
+                positionMissing: "Helper needed",
                 roles: {
                     'Event Director': 'Event Director',
                     'Run Director': 'Run Director',
@@ -614,6 +744,10 @@
                 helperDeleted: "Helfer gelöscht!",
                 fillBothFields: "Bitte füllen Sie beide Felder aus!",
                 noHelpers: "Noch keine Helfer hinzugefügt. Fügen Sie oben Ihren ersten Helfer hinzu!",
+                teamOverview: "Team Übersicht",
+                filled: "Besetzt",
+                missing: "Fehlt",
+                positionMissing: "Helfer benötigt",
                 roles: {
                     'Event Director': 'Veranstaltungsleiter',
                     'Run Director': 'Laufleiter',
@@ -846,6 +980,79 @@
                 const role = select.dataset.role;
                 select.value = weekData[role]?.helperId || '';
             });
+            
+            updateTeamSummary();
+        }
+
+        // Update team summary
+        function updateTeamSummary() {
+            const selectedWeek = document.getElementById('weekSelect').value;
+            const weekData = parkrunData[selectedWeek] || {};
+            const selectedDate = new Date(selectedWeek);
+            
+            let filledCount = 0;
+            let missingCount = 0;
+            let positionsHtml = '';
+            
+            volunteerRoles.forEach(role => {
+                const hasHelper = weekData[role] && weekData[role].helperId;
+                
+                if (hasHelper) {
+                    filledCount++;
+                    const helper = weekData[role];
+                    positionsHtml += `
+                        <div class="position-item filled">
+                            <div class="position-icon position-filled">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </div>
+                            <div class="position-details">
+                                <div class="position-role">${getTranslatedRole(role)}</div>
+                                <div class="position-helper">${helper.name} (${helper.id})</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    missingCount++;
+                    positionsHtml += `
+                        <div class="position-item missing">
+                            <div class="position-icon position-missing">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="8" x2="12" y2="12"/>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                            </div>
+                            <div class="position-details">
+                                <div class="position-role">${getTranslatedRole(role)}</div>
+                                <div class="position-helper">${translations[currentLanguage].positionMissing}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            const summaryHtml = `
+                <div class="summary-header">
+                    <div class="summary-title">${translations[currentLanguage].teamOverview}: ${formatDate(selectedDate)}</div>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-number stat-filled">${filledCount}</div>
+                            <div class="stat-label">${translations[currentLanguage].filled}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number stat-missing">${missingCount}</div>
+                            <div class="stat-label">${translations[currentLanguage].missing}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="positions-grid">
+                    ${positionsHtml}
+                </div>
+            `;
+            
+            document.getElementById('teamSummary').innerHTML = summaryHtml;
         }
 
         // Save volunteer data
@@ -870,6 +1077,7 @@
             }
             
             saveToStorage();
+            updateTeamSummary();
         }
 
         // Clear helper for a role
