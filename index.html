@@ -191,6 +191,14 @@
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
             transform: translateY(-1px);
         }
+        
+        .helper-select:focus {
+            outline: none;
+            border-color: #667eea;
+            border-right: 1px solid #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            z-index: 1;
+        }
 
         /* Missing positions alert */
         .missing-positions-alert {
@@ -305,20 +313,23 @@
             width: 80%;
             padding: 8px 10px;
             border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            border-radius: 6px 0 0 6px;
             font-size: 14px;
             background: white;
             cursor: pointer;
+            border-right: none;
         }
 
         .clear-helper-btn {
             width: 20%;
-            height: 32px;
+            min-width: 50px;
+            height: 36px;
             padding: 0;
-            background: transparent;
+            background: #fee;
             color: #e53e3e;
-            border: none;
-            border-radius: 3px;
+            border: 1px solid #e2e8f0;
+            border-left: 1px solid #f1f5f9;
+            border-radius: 0 6px 6px 0;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -328,13 +339,14 @@
         }
 
         .clear-helper-btn:hover {
-            background: #fee;
+            background: #fdd;
             color: #c53030;
+            border-color: #feb2b2;
         }
 
         .clear-helper-btn svg {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
         }
 
         /* Team summary page styles */
@@ -718,17 +730,18 @@
                 font-size: 13px;
                 padding: 6px 8px;
                 width: 80%;
-                height: 28px;
+                height: 32px;
             }
             
             .clear-helper-btn {
                 width: 20%;
-                height: 28px;
+                min-width: 40px;
+                height: 32px;
             }
             
             .clear-helper-btn svg {
-                width: 16px;
-                height: 16px;
+                width: 14px;
+                height: 14px;
             }
 
             .missing-position-chip {
