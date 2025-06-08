@@ -285,12 +285,12 @@
 
         .input-group {
             display: flex;
-            gap: 8px;
+            gap: 4px;
             align-items: center;
         }
 
         .helper-select {
-            width: calc(100% - 36px);
+            width: calc(100% - 28px);
             padding: 8px 10px;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
@@ -300,28 +300,29 @@
         }
 
         .clear-helper-btn {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             padding: 0;
-            background: #e53e3e;
-            color: white;
+            background: transparent;
+            color: #e53e3e;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             flex-shrink: 0;
         }
 
         .clear-helper-btn:hover {
-            background: #c53030;
+            background: #fee;
+            color: #c53030;
         }
 
         .clear-helper-btn svg {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
         }
 
         /* Team summary page styles */
@@ -1202,10 +1203,10 @@
                             <select class="helper-select" data-role="${role}" onchange="saveVolunteerData(this)">
                                 <option value="">${translations[currentLanguage].selectHelper}</option>
                             </select>
-                            <button class="clear-helper-btn" onclick="clearHelper('${role}')" title="Clear">
+                            <button class="clear-helper-btn" onclick="clearHelper('${role}')" title="Remove">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="6" x2="6" y2="18"/>
-                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
                                 </svg>
                             </button>
                         </div>
