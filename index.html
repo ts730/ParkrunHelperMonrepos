@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkrun Helper Organizer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            color: #5a67d8;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 5px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #5a67d8;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .manage-helpers-btn {
+            padding: 10px 20px;
+            background: #5a67d8;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .manage-helpers-btn:hover {
+            background: #4c51bf;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(90, 103, 216, 0.3);
+        }
+
+        .week-selector {
+            margin-bottom: 30px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            color: #2d3748;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .volunteer-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .role-cell {
+            font-weight: 600;
+            color: #4a5568;
+            white-space: nowrap;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .helper-select {
+            width: calc(100% - 40px);
+            padding: 8px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .clear-helper-btn {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .clear-helper-btn:hover {
+            background: #c53030;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .export-btn {
+            background: #48bb78;
+            color: white;
+        }
+
+        .export-btn:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .clear-btn {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 500px;
+            margin: 50px auto;
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #f7fafc;
+        }
+
+        .helper-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .helper-form input {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .add-helper-btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            white-space: nowrap;
+        }
+
+        .add-helper-btn:hover {
+            background: #5a67d8;
+        }
+
+        .helpers-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .helper-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .helper-item:hover {
+            background: #edf2f7;
+        }
+
+        .helper-info {
+            flex: 1;
+        }
+
+        .helper-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .helper-id {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .delete-helper-btn {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .delete-helper-btn:hover {
+            background: #c53030;
+        }
+
+        .no-helpers {
+            text-align: center;
+            padding: 40px;
+            color: #a0aec0;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .helper-form {
+                flex-direction: column;
+            }
+
+            .helper-form input {
+                width: 100%;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #48bb78;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <span data-i18n="title">Parkrun Helper Organizer</span>
+            </h1>
+            <div class="language-switcher">
+                <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="setLanguage('de')">DE</button>
+            </div>
+        </div>
+
+        <button class="manage-helpers-btn" onclick="openHelperModal()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="8.5" cy="7" r="4"/>
+                <line x1="20" y1="8" x2="20" y2="14"/>
+                <line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+            <span data-i18n="manageHelpers">Manage Helpers</span>
+        </button>
+
+        <div class="week-selector">
+            <select id="weekSelect" onchange="loadWeekData()">
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+
+        <div class="volunteer-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th data-i18n="activity">Activity</th>
+                        <th data-i18n="helper">Helper</th>
+                    </tr>
+                </thead>
+                <tbody id="volunteerTableBody">
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="actions">
+            <button class="export-btn" onclick="exportToEmail()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <span data-i18n="exportEmail">Export to Email</span>
+            </button>
+            <button class="clear-btn" onclick="clearWeekData()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                <span data-i18n="clearWeek">Clear Week</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Helper Management Modal -->
+    <div class="modal" id="helperModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="manageHelpers">Manage Helpers</h2>
+                <button class="close-modal" onclick="closeHelperModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="helper-form">
+                <input type="text" id="newHelperName" placeholder="Name" data-i18n-placeholder="enterName">
+                <input type="text" id="newHelperId" placeholder="Parkrun ID" data-i18n-placeholder="enterId">
+                <button class="add-helper-btn" onclick="addHelper()">
+                    <span data-i18n="addHelper">Add Helper</span>
+                </button>
+            </div>
+
+            <div class="helpers-list" id="helpersList">
+                <!-- Helper items will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Translation dictionary
+        const translations = {
+            en: {
+                title: "Parkrun Helper Organizer",
+                activity: "Activity",
+                name: "Name",
+                parkrunId: "Parkrun ID",
+                helper: "Helper",
+                manageHelpers: "Manage Helpers",
+                addHelper: "Add Helper",
+                exportEmail: "Export to Email",
+                clearWeek: "Clear Week",
+                enterName: "Enter name",
+                enterId: "Enter ID",
+                selectHelper: "Select a helper...",
+                clearConfirm: "Are you sure you want to clear all volunteer data for this week?",
+                weekCleared: "Week data cleared!",
+                noVolunteers: "No volunteers to export for this week!",
+                openingEmail: "Opening email client...",
+                emailSubject: "Parkrun Helper Team",
+                helperAdded: "Helper added successfully!",
+                helperDeleted: "Helper deleted!",
+                fillBothFields: "Please fill in both name and ID fields!",
+                noHelpers: "No helpers added yet. Add your first helper above!",
+                roles: {
+                    'Event Director': 'Event Director',
+                    'Run Director': 'Run Director',
+                    'Timekeeper': 'Timekeeper',
+                    'Funnel Manager': 'Funnel Manager',
+                    'Finish Tokens': 'Finish Tokens',
+                    'Finish Scanner': 'Finish Scanner',
+                    'Barcode Scanner': 'Barcode Scanner',
+                    'Marshal': 'Marshal',
+                    'Tail Walker': 'Tail Walker',
+                    'Pacer': 'Pacer',
+                    'Photographer': 'Photographer',
+                    'Results Processor': 'Results Processor',
+                    'Token Sorting': 'Token Sorting',
+                    'New Runner Briefing': 'New Runner Briefing',
+                    'Setup/Close Down': 'Setup/Close Down'
+                }
+            },
+            de: {
+                title: "Parkrun Helfer Organizer",
+                activity: "Aufgabe",
+                name: "Name",
+                parkrunId: "Parkrun ID",
+                helper: "Helfer",
+                manageHelpers: "Helfer verwalten",
+                addHelper: "Helfer hinzufügen",
+                exportEmail: "Per E-Mail senden",
+                clearWeek: "Woche löschen",
+                enterName: "Name eingeben",
+                enterId: "ID eingeben",
+                selectHelper: "Helfer auswählen...",
+                clearConfirm: "Möchten Sie wirklich alle Helferdaten für diese Woche löschen?",
+                weekCleared: "Wochendaten gelöscht!",
+                noVolunteers: "Keine Helfer zum Exportieren für diese Woche!",
+                openingEmail: "E-Mail-Client wird geöffnet...",
+                emailSubject: "Parkrun Helfer Team",
+                helperAdded: "Helfer erfolgreich hinzugefügt!",
+                helperDeleted: "Helfer gelöscht!",
+                fillBothFields: "Bitte füllen Sie beide Felder aus!",
+                noHelpers: "Noch keine Helfer hinzugefügt. Fügen Sie oben Ihren ersten Helfer hinzu!",
+                roles: {
+                    'Event Director': 'Veranstaltungsleiter',
+                    'Run Director': 'Laufleiter',
+                    'Timekeeper': 'Zeitnehmer',
+                    'Funnel Manager': 'Zieleinlauf-Manager',
+                    'Finish Tokens': 'Platzmarken-Verteiler',
+                    'Finish Scanner': 'Ziel-Scanner',
+                    'Barcode Scanner': 'Barcode-Scanner',
+                    'Marshal': 'Streckenposten',
+                    'Tail Walker': 'Schlussläufer',
+                    'Pacer': 'Tempoläufer',
+                    'Photographer': 'Fotograf',
+                    'Results Processor': 'Ergebnisverarbeitung',
+                    'Token Sorting': 'Markensortierung',
+                    'New Runner Briefing': 'Neuläufer-Einweisung',
+                    'Setup/Close Down': 'Auf-/Abbau'
+                }
+            }
+        };
+
+        // Current language
+        let currentLanguage = 'en';
+
+        // Parkrun volunteer roles (using English as keys)
+        const volunteerRoles = [
+            'Event Director',
+            'Run Director',
+            'Timekeeper',
+            'Funnel Manager',
+            'Finish Tokens',
+            'Finish Scanner',
+            'Barcode Scanner',
+            'Marshal',
+            'Tail Walker',
+            'Pacer',
+            'Photographer',
+            'Results Processor',
+            'Token Sorting',
+            'New Runner Briefing',
+            'Setup/Close Down'
+        ];
+
+        // Initialize data storage
+        let parkrunData = {};
+        let helpersDatabase = {};
+
+        // Load language preference
+        function loadLanguagePreference() {
+            const savedLang = localStorage.getItem('parkrunLanguage');
+            if (savedLang && (savedLang === 'en' || savedLang === 'de')) {
+                currentLanguage = savedLang;
+            }
+        }
+
+        // Set language
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('parkrunLanguage', lang);
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update all translations
+            updateTranslations();
+            createVolunteerRows();
+            loadWeekData();
+            updateHelpersList();
+        }
+
+        // Update translations
+        function updateTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                element.textContent = translations[currentLanguage][key];
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                element.placeholder = translations[currentLanguage][key];
+            });
+        }
+
+        // Get translated role name
+        function getTranslatedRole(role) {
+            return translations[currentLanguage].roles[role] || role;
+        }
+
+        // Load data from localStorage
+        function loadFromStorage() {
+            const stored = localStorage.getItem('parkrunHelperData');
+            if (stored) {
+                parkrunData = JSON.parse(stored);
+            }
+            
+            const storedHelpers = localStorage.getItem('parkrunHelpers');
+            if (storedHelpers) {
+                helpersDatabase = JSON.parse(storedHelpers);
+            }
+        }
+
+        // Save data to localStorage
+        function saveToStorage() {
+            localStorage.setItem('parkrunHelperData', JSON.stringify(parkrunData));
+        }
+
+        // Save helpers to localStorage
+        function saveHelpersToStorage() {
+            localStorage.setItem('parkrunHelpers', JSON.stringify(helpersDatabase));
+        }
+
+        // Get all Saturdays from today until end of year
+        function getSaturdays() {
+            const saturdays = [];
+            const today = new Date();
+            const year = today.getFullYear();
+            const endOfYear = new Date(year, 11, 31);
+            
+            // Find next Saturday
+            let current = new Date(today);
+            const daysUntilSaturday = (6 - current.getDay() + 7) % 7 || 7;
+            current.setDate(current.getDate() + daysUntilSaturday);
+            
+            while (current <= endOfYear) {
+                saturdays.push(new Date(current));
+                current.setDate(current.getDate() + 7);
+            }
+            
+            return saturdays;
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+            const locale = currentLanguage === 'de' ? 'de-DE' : 'en-GB';
+            return date.toLocaleDateString(locale, options);
+        }
+
+        // Format date as key
+        function dateToKey(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        // Populate week selector
+        function populateWeekSelector() {
+            const select = document.getElementById('weekSelect');
+            const currentValue = select.value;
+            select.innerHTML = '';
+            const saturdays = getSaturdays();
+            
+            saturdays.forEach(saturday => {
+                const option = document.createElement('option');
+                option.value = dateToKey(saturday);
+                option.textContent = formatDate(saturday);
+                select.appendChild(option);
+            });
+            
+            if (currentValue) {
+                select.value = currentValue;
+            }
+        }
+
+        // Create volunteer table rows
+        function createVolunteerRows() {
+            const tbody = document.getElementById('volunteerTableBody');
+            tbody.innerHTML = '';
+            
+            volunteerRoles.forEach(role => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="role-cell">${getTranslatedRole(role)}</td>
+                    <td>
+                        <div class="input-group">
+                            <select class="helper-select" data-role="${role}" onchange="saveVolunteerData(this)">
+                                <option value="">${translations[currentLanguage].selectHelper}</option>
+                            </select>
+                            <button class="clear-helper-btn" onclick="clearHelper('${role}')" title="Clear">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Populate helper dropdowns
+            updateHelperDropdowns();
+        }
+
+        // Update helper dropdowns
+        function updateHelperDropdowns() {
+            const selects = document.querySelectorAll('.helper-select');
+            
+            selects.forEach(select => {
+                const currentValue = select.value;
+                
+                // Clear existing options except the first one
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Add helpers
+                Object.entries(helpersDatabase).forEach(([helperId, helper]) => {
+                    const option = document.createElement('option');
+                    option.value = helperId;
+                    option.textContent = `${helper.name} (${helper.id})`;
+                    select.appendChild(option);
+                });
+                
+                // Restore previous value if it exists
+                if (currentValue) {
+                    select.value = currentValue;
+                }
+            });
+        }
+
+        // Load data for selected week
+        function loadWeekData() {
+            const selectedWeek = document.getElementById('weekSelect').value;
+            const weekData = parkrunData[selectedWeek] || {};
+            
+            const selects = document.querySelectorAll('.helper-select');
+            selects.forEach(select => {
+                const role = select.dataset.role;
+                select.value = weekData[role]?.helperId || '';
+            });
+        }
+
+        // Save volunteer data
+        function saveVolunteerData(select) {
+            const selectedWeek = document.getElementById('weekSelect').value;
+            const role = select.dataset.role;
+            const helperId = select.value;
+            
+            if (!parkrunData[selectedWeek]) {
+                parkrunData[selectedWeek] = {};
+            }
+            
+            if (helperId) {
+                const helper = helpersDatabase[helperId];
+                parkrunData[selectedWeek][role] = {
+                    helperId: helperId,
+                    name: helper.name,
+                    id: helper.id
+                };
+            } else {
+                delete parkrunData[selectedWeek][role];
+            }
+            
+            saveToStorage();
+        }
+
+        // Clear helper for a role
+        function clearHelper(role) {
+            const selectedWeek = document.getElementById('weekSelect').value;
+            if (parkrunData[selectedWeek] && parkrunData[selectedWeek][role]) {
+                delete parkrunData[selectedWeek][role];
+                saveToStorage();
+                loadWeekData();
+            }
+        }
+
+        // Clear week data
+        function clearWeekData() {
+            if (confirm(translations[currentLanguage].clearConfirm)) {
+                const selectedWeek = document.getElementById('weekSelect').value;
+                delete parkrunData[selectedWeek];
+                saveToStorage();
+                loadWeekData();
+                showToast(translations[currentLanguage].weekCleared);
+            }
+        }
+
+        // Export to email
+        function exportToEmail() {
+            const selectedWeek = document.getElementById('weekSelect').value;
+            const weekData = parkrunData[selectedWeek] || {};
+            const selectedDate = new Date(selectedWeek);
+            
+            let emailBody = `${translations[currentLanguage].emailSubject} - ${formatDate(selectedDate)}\n\n`;
+            emailBody += `${translations[currentLanguage].activity} | ${translations[currentLanguage].name} | ${translations[currentLanguage].parkrunId}\n`;
+            emailBody += '---------|------|------------\n';
+            
+            let hasVolunteers = false;
+            volunteerRoles.forEach(role => {
+                if (weekData[role]) {
+                    hasVolunteers = true;
+                    const name = weekData[role].name || '-';
+                    const id = weekData[role].id || '-';
+                    emailBody += `${getTranslatedRole(role)} | ${name} | ${id}\n`;
+                }
+            });
+            
+            if (!hasVolunteers) {
+                showToast(translations[currentLanguage].noVolunteers);
+                return;
+            }
+            
+            const subject = `${translations[currentLanguage].emailSubject} - ${formatDate(selectedDate)}`;
+            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            window.location.href = mailtoLink;
+            showToast(translations[currentLanguage].openingEmail);
+        }
+
+        // Helper Management Functions
+        function openHelperModal() {
+            document.getElementById('helperModal').style.display = 'block';
+            updateHelpersList();
+        }
+
+        function closeHelperModal() {
+            document.getElementById('helperModal').style.display = 'none';
+            document.getElementById('newHelperName').value = '';
+            document.getElementById('newHelperId').value = '';
+        }
+
+        function addHelper() {
+            const name = document.getElementById('newHelperName').value.trim();
+            const id = document.getElementById('newHelperId').value.trim();
+            
+            if (!name || !id) {
+                showToast(translations[currentLanguage].fillBothFields);
+                return;
+            }
+            
+            const helperId = Date.now().toString();
+            helpersDatabase[helperId] = { name, id };
+            saveHelpersToStorage();
+            
+            document.getElementById('newHelperName').value = '';
+            document.getElementById('newHelperId').value = '';
+            
+            updateHelpersList();
+            updateHelperDropdowns();
+            showToast(translations[currentLanguage].helperAdded);
+        }
+
+        function deleteHelper(helperId) {
+            delete helpersDatabase[helperId];
+            saveHelpersToStorage();
+            
+            // Remove from all weeks
+            Object.keys(parkrunData).forEach(week => {
+                Object.keys(parkrunData[week]).forEach(role => {
+                    if (parkrunData[week][role]?.helperId === helperId) {
+                        delete parkrunData[week][role];
+                    }
+                });
+            });
+            saveToStorage();
+            
+            updateHelpersList();
+            updateHelperDropdowns();
+            loadWeekData();
+            showToast(translations[currentLanguage].helperDeleted);
+        }
+
+        function updateHelpersList() {
+            const helpersList = document.getElementById('helpersList');
+            helpersList.innerHTML = '';
+            
+            const helperEntries = Object.entries(helpersDatabase);
+            
+            if (helperEntries.length === 0) {
+                helpersList.innerHTML = `<div class="no-helpers">${translations[currentLanguage].noHelpers}</div>`;
+                return;
+            }
+            
+            helperEntries.forEach(([helperId, helper]) => {
+                const helperItem = document.createElement('div');
+                helperItem.className = 'helper-item';
+                helperItem.innerHTML = `
+                    <div class="helper-info">
+                        <div class="helper-name">${helper.name}</div>
+                        <div class="helper-id">${helper.id}</div>
+                    </div>
+                    <button class="delete-helper-btn" onclick="deleteHelper('${helperId}')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                `;
+                helpersList.appendChild(helperItem);
+            });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('helperModal');
+            if (event.target === modal) {
+                closeHelperModal();
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            loadFromStorage();
+            loadLanguagePreference();
+            
+            // Set initial language button state
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase() === currentLanguage) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            updateTranslations();
+            populateWeekSelector();
+            createVolunteerRows();
+            loadWeekData();
+        };
+
+        // Update week selector when language changes
+        window.addEventListener('languagechange', populateWeekSelector);
+    </script>
+</body>
+</html>
