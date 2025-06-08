@@ -276,6 +276,11 @@
             font-weight: 600;
             color: #4a5568;
             white-space: nowrap;
+            width: 40%;
+        }
+
+        .helper-cell {
+            width: 60%;
         }
 
         .input-group {
@@ -285,7 +290,7 @@
         }
 
         .helper-select {
-            width: calc(100% - 40px);
+            width: calc(100% - 36px);
             padding: 8px 10px;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
@@ -295,8 +300,8 @@
         }
 
         .clear-helper-btn {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             padding: 0;
             background: #e53e3e;
             color: white;
@@ -307,10 +312,16 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .clear-helper-btn:hover {
             background: #c53030;
+        }
+
+        .clear-helper-btn svg {
+            width: 14px;
+            height: 14px;
         }
 
         /* Team summary page styles */
@@ -1186,13 +1197,13 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="role-cell">${getTranslatedRole(role)}</td>
-                    <td>
+                    <td class="helper-cell">
                         <div class="input-group">
                             <select class="helper-select" data-role="${role}" onchange="saveVolunteerData(this)">
                                 <option value="">${translations[currentLanguage].selectHelper}</option>
                             </select>
                             <button class="clear-helper-btn" onclick="clearHelper('${role}')" title="Clear">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="18" y1="6" x2="6" y2="18"/>
                                     <line x1="6" y1="6" x2="18" y2="18"/>
                                 </svg>
