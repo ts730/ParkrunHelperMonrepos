@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Parkrun Helper Organizer</title>
+    <title>Monrepos Parkrun Helper Organizer</title>
     <style>
         * {
             box-sizing: border-box;
@@ -542,16 +542,16 @@
         }
 
         .clear-btn {
-            background: #003D71;
+            background: #cc0000;
             color: white;
-            border: 2px solid #003D71;
+            border: 2px solid #cc0000;
         }
 
         .clear-btn:hover {
-            background: #cc0000;
-            border-color: #cc0000;
+            background: #990000;
+            border-color: #990000;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(204, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(153, 0, 0, 0.3);
         }
 
         .clear-btn svg {
@@ -917,12 +917,8 @@
         <div id="mainPage" class="page active">
             <div class="header">
                 <h1>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#003D71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
-                    <span data-i18n="title">Parkrun Helper Organizer</span>
+                    <img src="https://cdn.brandfetch.io/idtc7X5XcQ/w/400/h/400/theme/dark/icon.jpeg?c=1dxbfHSJFAPEGdCLU4o5B" alt="Parkrun Logo" style="margin-right: 10px; max-height: 60px; width: auto;">
+                    <span data-i18n="title">Monrepos Parkrun Helper Organizer</span>
                 </h1>
                 <div class="language-switcher">
                     <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
@@ -995,7 +991,7 @@
                 <button class="clear-btn" onclick="clearWeekData()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="3 6 5 6 21 6"/>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2 2h4a2 2 0 0 1 2 2v2"/>
                     </svg>
                     <span data-i18n="clearWeek">Clear Week</span>
                 </button>
@@ -1061,7 +1057,7 @@
         // Translation dictionary
         const translations = {
             en: {
-                title: "Parkrun Helper Organizer",
+                title: "Monrepos Parkrun Helper Organizer",
                 activity: "Activity",
                 name: "Name",
                 parkrunId: "Parkrun ID",
@@ -1092,25 +1088,22 @@
                 missingPositions: "Missing positions",
                 allPositionsFilled: "All positions filled!",
                 roles: {
-                    'Event Director': 'Event Director',
                     'Run Director': 'Run Director',
                     'Timekeeper': 'Timekeeper',
-                    'Funnel Manager': 'Funnel Manager',
-                    'Finish Tokens': 'Finish Tokens',
-                    'Finish Scanner': 'Finish Scanner',
+                    'Course Setup': 'Course Setup',
+                    'Token Dispenser': 'Token Dispenser',
                     'Barcode Scanner': 'Barcode Scanner',
-                    'Marshal': 'Marshal',
+                    'Marshal ': 'Marshal',
                     'Tail Walker': 'Tail Walker',
-                    'Pacer': 'Pacer',
+                    'Parkwalker': 'Parkwalker',
                     'Photographer': 'Photographer',
-                    'Results Processor': 'Results Processor',
-                    'Token Sorting': 'Token Sorting',
                     'New Runner Briefing': 'New Runner Briefing',
-                    'Setup/Close Down': 'Setup/Close Down'
+                    'Close Down': 'Close Down',
+                    'Catering': 'Catering',
                 }
             },
             de: {
-                title: "Parkrun Helfer Organizer",
+                title: "Monrepos Parkrun Helfer Organizer",
                 activity: "Aufgabe",
                 name: "Name",
                 parkrunId: "Parkrun ID",
@@ -1141,21 +1134,20 @@
                 missingPositions: "Fehlende Positionen",
                 allPositionsFilled: "Alle Positionen besetzt!",
                 roles: {
-                    'Event Director': 'Veranstaltungsleiter',
                     'Run Director': 'Laufleiter',
                     'Timekeeper': 'Zeitnehmer',
                     'Funnel Manager': 'Zieleinlauf-Manager',
-                    'Finish Tokens': 'Platzmarken-Verteiler',
+                    'Token Dispenser': 'Platzierungsmarken-Verteiler',
                     'Finish Scanner': 'Ziel-Scanner',
                     'Barcode Scanner': 'Barcode-Scanner',
                     'Marshal': 'Streckenposten',
                     'Tail Walker': 'Schlussläufer',
-                    'Pacer': 'Tempoläufer',
                     'Photographer': 'Fotograf',
-                    'Results Processor': 'Ergebnisverarbeitung',
-                    'Token Sorting': 'Markensortierung',
-                    'New Runner Briefing': 'Neuläufer-Einweisung',
-                    'Setup/Close Down': 'Auf-/Abbau'
+                    'New Runner Briefing': 'Erstläufer-Einweisung',
+                    'Close Down': 'Abbau',
+                    'Parkwalker': 'Parkwalker', 
+                    'Course Setup': 'Aufbau und Streckenprüfung',
+                    'Catering': 'Kuchen backen',
                 }
             }
         };
@@ -1165,21 +1157,18 @@
 
         // Parkrun volunteer roles (using English as keys)
         const volunteerRoles = [
-            'Event Director',
             'Run Director',
             'Timekeeper',
-            'Funnel Manager',
-            'Finish Tokens',
-            'Finish Scanner',
+            'Token Dispenser',
             'Barcode Scanner',
             'Marshal',
+            'Parkwalker',
             'Tail Walker',
-            'Pacer',
             'Photographer',
-            'Results Processor',
-            'Token Sorting',
             'New Runner Briefing',
-            'Setup/Close Down'
+            'Close Down',
+            'Course Setup',
+            'Catering',
         ];
 
         // Initialize data storage
