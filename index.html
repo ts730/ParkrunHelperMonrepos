@@ -1053,127 +1053,13 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- Load external data files -->
+    <script src="parkrun-config.js"></script>
+    <script src="parkrun-data.js"></script>
+    
     <script>
-        // Translation dictionary
-        const translations = {
-            en: {
-                title: "Monrepos Parkrun Helper Organizer",
-                activity: "Activity",
-                name: "Name",
-                parkrunId: "Parkrun ID",
-                helper: "Helper",
-                manageHelpers: "Manage Helpers",
-                viewTeam: "View Team",
-                back: "Back",
-                addHelper: "Add Helper",
-                exportEmail: "Export to Email",
-                clearWeek: "Clear Week",
-                enterName: "Enter name",
-                enterId: "Enter ID",
-                selectWeek: "Select Week",
-                selectHelper: "Select a helper...",
-                clearConfirm: "Are you sure you want to clear all volunteer data for this week?",
-                weekCleared: "Week data cleared!",
-                noVolunteers: "No volunteers to export for this week!",
-                openingEmail: "Opening email client...",
-                emailSubject: "Parkrun Helper Team",
-                helperAdded: "Helper added successfully!",
-                helperDeleted: "Helper deleted!",
-                fillBothFields: "Please fill in both name and ID fields!",
-                noHelpers: "No helpers added yet. Add your first helper above!",
-                teamOverview: "Team Overview",
-                filled: "Filled",
-                missing: "Missing",
-                positionMissing: "Helper needed",
-                missingPositions: "Missing positions",
-                allPositionsFilled: "All positions filled!",
-                roles: {
-                    'Run Director': 'Run Director',
-                    'Timekeeper': 'Timekeeper',
-                    'Course Setup': 'Course Setup',
-                    'Token Dispenser': 'Token Dispenser',
-                    'Barcode Scanner': 'Barcode Scanner',
-                    'Marshal ': 'Marshal',
-                    'Tail Walker': 'Tail Walker',
-                    'Parkwalker': 'Parkwalker',
-                    'Photographer': 'Photographer',
-                    'New Runner Briefing': 'New Runner Briefing',
-                    'Close Down': 'Close Down',
-                    'Catering': 'Catering',
-                }
-            },
-            de: {
-                title: "Monrepos Parkrun Helfer Organizer",
-                activity: "Aufgabe",
-                name: "Name",
-                parkrunId: "Parkrun ID",
-                helper: "Helfer",
-                manageHelpers: "Helfer verwalten",
-                viewTeam: "Team anzeigen",
-                back: "Zurück",
-                addHelper: "Helfer hinzufügen",
-                exportEmail: "Per E-Mail senden",
-                clearWeek: "Woche löschen",
-                enterName: "Name eingeben",
-                enterId: "ID eingeben",
-                selectWeek: "Woche auswählen",
-                selectHelper: "Helfer auswählen...",
-                clearConfirm: "Möchten Sie wirklich alle Helferdaten für diese Woche löschen?",
-                weekCleared: "Wochendaten gelöscht!",
-                noVolunteers: "Keine Helfer zum Exportieren für diese Woche!",
-                openingEmail: "E-Mail-Client wird geöffnet...",
-                emailSubject: "Parkrun Helfer Team",
-                helperAdded: "Helfer erfolgreich hinzugefügt!",
-                helperDeleted: "Helfer gelöscht!",
-                fillBothFields: "Bitte füllen Sie beide Felder aus!",
-                noHelpers: "Noch keine Helfer hinzugefügt. Fügen Sie oben Ihren ersten Helfer hinzu!",
-                teamOverview: "Team Übersicht",
-                filled: "Besetzt",
-                missing: "Fehlt",
-                positionMissing: "Helfer benötigt",
-                missingPositions: "Fehlende Positionen",
-                allPositionsFilled: "Alle Positionen besetzt!",
-                roles: {
-                    'Run Director': 'Laufleiter',
-                    'Timekeeper': 'Zeitnehmer',
-                    'Funnel Manager': 'Zieleinlauf-Manager',
-                    'Token Dispenser': 'Platzierungsmarken-Verteiler',
-                    'Finish Scanner': 'Ziel-Scanner',
-                    'Barcode Scanner': 'Barcode-Scanner',
-                    'Marshal': 'Streckenposten',
-                    'Tail Walker': 'Schlussläufer',
-                    'Photographer': 'Fotograf',
-                    'New Runner Briefing': 'Erstläufer-Einweisung',
-                    'Close Down': 'Abbau',
-                    'Parkwalker': 'Parkwalker', 
-                    'Course Setup': 'Aufbau und Streckenprüfung',
-                    'Catering': 'Kuchen backen',
-                }
-            }
-        };
-
-        // Current language
-        let currentLanguage = 'en';
-
-        // Parkrun volunteer roles (using English as keys)
-        const volunteerRoles = [
-            'Run Director',
-            'Timekeeper',
-            'Token Dispenser',
-            'Barcode Scanner',
-            'Marshal',
-            'Parkwalker',
-            'Tail Walker',
-            'Photographer',
-            'New Runner Briefing',
-            'Close Down',
-            'Course Setup',
-            'Catering',
-        ];
-
-        // Initialize data storage
-        let parkrunData = {};
-        let helpersDatabase = {};
+        // Current language (now loaded from ParkrunData)
+        let currentLanguage = ParkrunData.getLanguage();
 
         // Page navigation
         function showMainView() {
@@ -1187,18 +1073,10 @@
             updateTeamSummary();
         }
 
-        // Load language preference
-        function loadLanguagePreference() {
-            const savedLang = localStorage.getItem('parkrunLanguage');
-            if (savedLang && (savedLang === 'en' || savedLang === 'de')) {
-                currentLanguage = savedLang;
-            }
-        }
-
         // Set language
         function setLanguage(lang) {
             currentLanguage = lang;
-            localStorage.setItem('parkrunLanguage', lang);
+            ParkrunData.setLanguage(lang);
             
             // Update language buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1217,42 +1095,19 @@
         function updateTranslations() {
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                element.textContent = translations[currentLanguage][key];
+                element.textContent = ParkrunConfig.getTranslation(currentLanguage, key);
             });
             
             // Update placeholders
             document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
                 const key = element.getAttribute('data-i18n-placeholder');
-                element.placeholder = translations[currentLanguage][key];
+                element.placeholder = ParkrunConfig.getTranslation(currentLanguage, key);
             });
         }
 
         // Get translated role name
         function getTranslatedRole(role) {
-            return translations[currentLanguage].roles[role] || role;
-        }
-
-        // Load data from localStorage
-        function loadFromStorage() {
-            const stored = localStorage.getItem('parkrunHelperData');
-            if (stored) {
-                parkrunData = JSON.parse(stored);
-            }
-            
-            const storedHelpers = localStorage.getItem('parkrunHelpers');
-            if (storedHelpers) {
-                helpersDatabase = JSON.parse(storedHelpers);
-            }
-        }
-
-        // Save data to localStorage
-        function saveToStorage() {
-            localStorage.setItem('parkrunHelperData', JSON.stringify(parkrunData));
-        }
-
-        // Save helpers to localStorage
-        function saveHelpersToStorage() {
-            localStorage.setItem('parkrunHelpers', JSON.stringify(helpersDatabase));
+            return ParkrunConfig.getTranslatedRole(currentLanguage, role);
         }
 
         // Get all Saturdays from today until end of year
@@ -1311,14 +1166,14 @@
             const tbody = document.getElementById('volunteerTableBody');
             tbody.innerHTML = '';
             
-            volunteerRoles.forEach(role => {
+            ParkrunConfig.volunteerRoles.forEach(role => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="role-cell">${getTranslatedRole(role)}</td>
                     <td class="helper-cell">
                         <div class="input-group">
                             <select class="helper-select" data-role="${role}" onchange="saveVolunteerData(this)">
-                                <option value="">${translations[currentLanguage].selectHelper}</option>
+                                <option value="">${ParkrunConfig.getTranslation(currentLanguage, 'selectHelper')}</option>
                             </select>
                             <button class="clear-helper-btn" onclick="clearHelper('${role}')" title="Remove">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1339,6 +1194,7 @@
         // Update helper dropdowns
         function updateHelperDropdowns() {
             const selects = document.querySelectorAll('.helper-select');
+            const helpers = ParkrunData.getHelpers();
             
             selects.forEach(select => {
                 const currentValue = select.value;
@@ -1349,7 +1205,7 @@
                 }
                 
                 // Add helpers
-                Object.entries(helpersDatabase).forEach(([helperId, helper]) => {
+                Object.entries(helpers).forEach(([helperId, helper]) => {
                     const option = document.createElement('option');
                     option.value = helperId;
                     option.textContent = `${helper.name} (${helper.id})`;
@@ -1366,10 +1222,10 @@
         // Update missing positions alert
         function updateMissingPositionsAlert() {
             const selectedWeek = document.getElementById('weekSelect').value;
-            const weekData = parkrunData[selectedWeek] || {};
+            const weekData = ParkrunData.getWeekData(selectedWeek);
             
             const missingRoles = [];
-            volunteerRoles.forEach(role => {
+            ParkrunConfig.volunteerRoles.forEach(role => {
                 if (!weekData[role] || !weekData[role].helperId) {
                     missingRoles.push(role);
                 }
@@ -1383,7 +1239,7 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"/>
                         </svg>
-                        ${translations[currentLanguage].allPositionsFilled}
+                        ${ParkrunConfig.getTranslation(currentLanguage, 'allPositionsFilled')}
                     </div>
                 `;
             } else {
@@ -1399,7 +1255,7 @@
                                 <line x1="12" y1="8" x2="12" y2="12"/>
                                 <line x1="12" y1="16" x2="12.01" y2="16"/>
                             </svg>
-                            ${translations[currentLanguage].missingPositions} (${missingRoles.length})
+                            ${ParkrunConfig.getTranslation(currentLanguage, 'missingPositions')} (${missingRoles.length})
                         </div>
                         <div class="missing-positions-list">
                             ${missingChips}
@@ -1412,7 +1268,7 @@
         // Load data for selected week
         function loadWeekData() {
             const selectedWeek = document.getElementById('weekSelect').value;
-            const weekData = parkrunData[selectedWeek] || {};
+            const weekData = ParkrunData.getWeekData(selectedWeek);
             
             const selects = document.querySelectorAll('.helper-select');
             selects.forEach(select => {
@@ -1426,14 +1282,14 @@
         // Update team summary
         function updateTeamSummary() {
             const selectedWeek = document.getElementById('weekSelect').value;
-            const weekData = parkrunData[selectedWeek] || {};
+            const weekData = ParkrunData.getWeekData(selectedWeek);
             const selectedDate = new Date(selectedWeek);
             
             let filledCount = 0;
             let missingCount = 0;
             let positionsHtml = '';
             
-            volunteerRoles.forEach(role => {
+            ParkrunConfig.volunteerRoles.forEach(role => {
                 const hasHelper = weekData[role] && weekData[role].helperId;
                 
                 if (hasHelper) {
@@ -1465,7 +1321,7 @@
                             </div>
                             <div class="position-details">
                                 <div class="position-role">${getTranslatedRole(role)}</div>
-                                <div class="position-helper">${translations[currentLanguage].positionMissing}</div>
+                                <div class="position-helper">${ParkrunConfig.getTranslation(currentLanguage, 'positionMissing')}</div>
                             </div>
                         </div>
                     `;
@@ -1474,15 +1330,15 @@
             
             const summaryHtml = `
                 <div class="summary-header">
-                    <div class="summary-title">${translations[currentLanguage].teamOverview}: ${formatDate(selectedDate)}</div>
+                    <div class="summary-title">${ParkrunConfig.getTranslation(currentLanguage, 'teamOverview')}: ${formatDate(selectedDate)}</div>
                     <div class="summary-stats">
                         <div class="stat-item">
                             <div class="stat-number stat-filled">${filledCount}</div>
-                            <div class="stat-label">${translations[currentLanguage].filled}</div>
+                            <div class="stat-label">${ParkrunConfig.getTranslation(currentLanguage, 'filled')}</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-number stat-missing">${missingCount}</div>
-                            <div class="stat-label">${translations[currentLanguage].missing}</div>
+                            <div class="stat-label">${ParkrunConfig.getTranslation(currentLanguage, 'missing')}</div>
                         </div>
                     </div>
                 </div>
@@ -1500,58 +1356,49 @@
             const role = select.dataset.role;
             const helperId = select.value;
             
-            if (!parkrunData[selectedWeek]) {
-                parkrunData[selectedWeek] = {};
-            }
-            
             if (helperId) {
-                const helper = helpersDatabase[helperId];
-                parkrunData[selectedWeek][role] = {
+                const helper = ParkrunData.getHelper(helperId);
+                ParkrunData.updateVolunteer(selectedWeek, role, {
                     helperId: helperId,
                     name: helper.name,
                     id: helper.id
-                };
+                });
             } else {
-                delete parkrunData[selectedWeek][role];
+                ParkrunData.updateVolunteer(selectedWeek, role, null);
             }
             
-            saveToStorage();
             updateMissingPositionsAlert();
         }
 
         // Clear helper for a role
         function clearHelper(role) {
             const selectedWeek = document.getElementById('weekSelect').value;
-            if (parkrunData[selectedWeek] && parkrunData[selectedWeek][role]) {
-                delete parkrunData[selectedWeek][role];
-                saveToStorage();
-                loadWeekData();
-            }
+            ParkrunData.clearVolunteer(selectedWeek, role);
+            loadWeekData();
         }
 
         // Clear week data
         function clearWeekData() {
-            if (confirm(translations[currentLanguage].clearConfirm)) {
+            if (confirm(ParkrunConfig.getTranslation(currentLanguage, 'clearConfirm'))) {
                 const selectedWeek = document.getElementById('weekSelect').value;
-                delete parkrunData[selectedWeek];
-                saveToStorage();
+                ParkrunData.clearWeek(selectedWeek);
                 loadWeekData();
-                showToast(translations[currentLanguage].weekCleared);
+                showToast(ParkrunConfig.getTranslation(currentLanguage, 'weekCleared'));
             }
         }
 
         // Export to email
         function exportToEmail() {
             const selectedWeek = document.getElementById('weekSelect').value;
-            const weekData = parkrunData[selectedWeek] || {};
+            const weekData = ParkrunData.getWeekData(selectedWeek);
             const selectedDate = new Date(selectedWeek);
             
-            let emailBody = `${translations[currentLanguage].emailSubject} - ${formatDate(selectedDate)}\n\n`;
-            emailBody += `${translations[currentLanguage].activity} | ${translations[currentLanguage].name} | ${translations[currentLanguage].parkrunId}\n`;
+            let emailBody = `${ParkrunConfig.getTranslation(currentLanguage, 'emailSubject')} - ${formatDate(selectedDate)}\n\n`;
+            emailBody += `${ParkrunConfig.getTranslation(currentLanguage, 'activity')} | ${ParkrunConfig.getTranslation(currentLanguage, 'name')} | ${ParkrunConfig.getTranslation(currentLanguage, 'parkrunId')}\n`;
             emailBody += '---------|------|------------\n';
             
             let hasVolunteers = false;
-            volunteerRoles.forEach(role => {
+            ParkrunConfig.volunteerRoles.forEach(role => {
                 if (weekData[role]) {
                     hasVolunteers = true;
                     const name = weekData[role].name || '-';
@@ -1561,15 +1408,15 @@
             });
             
             if (!hasVolunteers) {
-                showToast(translations[currentLanguage].noVolunteers);
+                showToast(ParkrunConfig.getTranslation(currentLanguage, 'noVolunteers'));
                 return;
             }
             
-            const subject = `${translations[currentLanguage].emailSubject} - ${formatDate(selectedDate)}`;
+            const subject = `${ParkrunConfig.getTranslation(currentLanguage, 'emailSubject')} - ${formatDate(selectedDate)}`;
             const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
             
             window.location.href = mailtoLink;
-            showToast(translations[currentLanguage].openingEmail);
+            showToast(ParkrunConfig.getTranslation(currentLanguage, 'openingEmail'));
         }
 
         // Helper Management Functions
@@ -1589,50 +1436,38 @@
             const id = document.getElementById('newHelperId').value.trim();
             
             if (!name || !id) {
-                showToast(translations[currentLanguage].fillBothFields);
+                showToast(ParkrunConfig.getTranslation(currentLanguage, 'fillBothFields'));
                 return;
             }
             
-            const helperId = Date.now().toString();
-            helpersDatabase[helperId] = { name, id };
-            saveHelpersToStorage();
+            ParkrunData.addHelper(name, id);
             
             document.getElementById('newHelperName').value = '';
             document.getElementById('newHelperId').value = '';
             
             updateHelpersList();
             updateHelperDropdowns();
-            showToast(translations[currentLanguage].helperAdded);
+            showToast(ParkrunConfig.getTranslation(currentLanguage, 'helperAdded'));
         }
 
         function deleteHelper(helperId) {
-            delete helpersDatabase[helperId];
-            saveHelpersToStorage();
-            
-            // Remove from all weeks
-            Object.keys(parkrunData).forEach(week => {
-                Object.keys(parkrunData[week]).forEach(role => {
-                    if (parkrunData[week][role]?.helperId === helperId) {
-                        delete parkrunData[week][role];
-                    }
-                });
-            });
-            saveToStorage();
+            ParkrunData.deleteHelper(helperId);
             
             updateHelpersList();
             updateHelperDropdowns();
             loadWeekData();
-            showToast(translations[currentLanguage].helperDeleted);
+            showToast(ParkrunConfig.getTranslation(currentLanguage, 'helperDeleted'));
         }
 
         function updateHelpersList() {
             const helpersList = document.getElementById('helpersList');
             helpersList.innerHTML = '';
             
-            const helperEntries = Object.entries(helpersDatabase);
+            const helpers = ParkrunData.getHelpers();
+            const helperEntries = Object.entries(helpers);
             
             if (helperEntries.length === 0) {
-                helpersList.innerHTML = `<div class="no-helpers">${translations[currentLanguage].noHelpers}</div>`;
+                helpersList.innerHTML = `<div class="no-helpers">${ParkrunConfig.getTranslation(currentLanguage, 'noHelpers')}</div>`;
                 return;
             }
             
@@ -1676,9 +1511,6 @@
 
         // Initialize on load
         window.onload = function() {
-            loadFromStorage();
-            loadLanguagePreference();
-            
             // Set initial language button state
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 if (btn.textContent.toLowerCase() === currentLanguage) {

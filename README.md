@@ -1,208 +1,118 @@
-# Parkrun Helper Organizer 🏃‍♀️🏃‍♂️
+# Parkrun Helper Organizer - Separated Database Files
 
-A bilingual web application for organizing Parkrun volunteer helpers and managing weekly schedules.
+## Overview
 
-## 📋 Overview
+This project has been restructured to separate the data storage from the main HTML file. This ensures that your volunteer data and helper database won't be lost when updating the HTML interface.
 
-The Parkrun Helper Organizer is a simple, user-friendly tool designed to help Parkrun event directors and organizers manage their volunteer teams efficiently. The application allows you to assign volunteers to different roles for each Saturday's event, track missing positions, and export schedules via email.
+## File Structure
 
-## ✨ Features
-
-### Core Functionality
-- **📅 Weekly Schedule Management** - Select and manage volunteers for each Saturday
-- **👥 Helper Database** - Add, edit, and remove volunteer helpers with their Parkrun IDs
-- **🎯 Role Assignment** - Assign helpers to specific Parkrun volunteer roles
-- **📊 Team Overview** - Visual summary of filled and missing positions
-- **📧 Email Export** - Generate and send volunteer schedules via email
-- **⚠️ Missing Position Alerts** - Instantly see which roles still need volunteers
-
-### User Experience
-- **🌐 Bilingual Support** - Full English and German localization
-- **📱 Responsive Design** - Works seamlessly on desktop, tablet, and mobile devices
-- **💾 Local Storage** - All data is saved locally in your browser
-- **🎨 Clean Interface** - Modern, intuitive design with Parkrun's color scheme
-- **⚡ Fast Performance** - Lightweight single-page application
-
-### Volunteer Roles Supported
-- Run Director
-- Timekeeper
-- Course Setup
-- Token Dispenser
-- Barcode Scanner
-- Marshal
-- Tail Walker
-- Parkwalker
-- Photographer
-- New Runner Briefing
-- Close Down
-- Catering
-
-## 🚀 Getting Started
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/parkrun-helper-organizer.git
-   cd parkrun-helper-organizer
-   ```
-
-2. **Open the application:**
-   - Simply open `index.html` in your web browser
-   - No server setup required!
-
-### Alternative Setup Methods
-
-**Option 1: Direct Download**
-- Download the `index.html` file
-- Open it in any modern web browser
-
-**Option 2: Web Server (Optional)**
-- If you prefer running on a local server:
-  ```bash
-  # Using Python 3
-  python -m http.server 8000
-  
-  # Using Node.js
-  npx serve .
-  ```
-
-## 📖 Usage Guide
-
-### 1. Language Selection
-- Choose between English (EN) and German (DE) using the language switcher in the top right
-- Your language preference is automatically saved
-
-### 2. Managing Helpers
-1. Click **"Manage Helpers"** button
-2. Add new helpers with their name and Parkrun ID
-3. Delete helpers as needed
-4. All helpers are stored locally and persist between sessions
-
-### 3. Scheduling Volunteers
-1. Select the desired Saturday from the week dropdown
-2. For each role, choose a helper from the dropdown menu
-3. Use the clear button (🗑️) to remove a helper from a role
-4. Changes are automatically saved
-
-### 4. Monitoring Team Status
-- **Missing Positions Alert**: See which roles still need volunteers
-- **Team Overview**: Click "View Team" for a comprehensive status summary
-- **Visual Indicators**: Green checkmarks for filled positions, red warnings for missing ones
-
-### 5. Exporting Schedules
-- Click **"Export to Email"** to generate a mailto link
-- The email will contain a formatted table with all volunteer assignments
-- Send directly to your team or event participants
-
-### 6. Data Management
-- **Clear Week**: Remove all assignments for the selected week
-- **Persistent Storage**: All data is automatically saved in your browser
-- **No Account Required**: Everything works offline after the initial load
-
-## 🛠️ Technical Details
-
-### Technology Stack
-- **HTML5** - Structure and semantic markup
-- **CSS3** - Styling with modern features (Grid, Flexbox, CSS Variables)
-- **Vanilla JavaScript** - No external dependencies
-- **Local Storage API** - Client-side data persistence
-
-### Browser Compatibility
-- ✅ Chrome 60+
-- ✅ Firefox 55+
-- ✅ Safari 12+
-- ✅ Edge 79+
-- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
-
-### Key Features
-- **Responsive Design**: Mobile-first approach with breakpoints at 480px
-- **Accessibility**: Semantic HTML, proper ARIA labels, keyboard navigation
-- **Performance**: Lightweight (~15KB total), fast loading, smooth animations
-- **Offline Capable**: Works without internet connection after initial load
-
-## 🎨 Customization
-
-### Color Scheme
-The application uses Parkrun's official colors:
-- **Primary Blue**: `#003D71`
-- **Orange Accent**: `#FF6900`
-- **White/Light Gray**: Backgrounds and contrast
-
-### Modifying Volunteer Roles
-To add or modify volunteer roles, edit the `volunteerRoles` array in the JavaScript section:
-
-```javascript
-const volunteerRoles = [
-    'Run Director',
-    'Timekeeper',
-    // Add your custom roles here
-    'Your Custom Role',
-];
+```
+parkrun-organizer/
+├── index.html           # Main application interface (updated)
+├── parkrun-data.js      # Data storage and management module
+├── parkrun-config.js    # Configuration, roles, and translations
+├── backup-utility.html  # Backup and restore tool
+└── README.md           # This file
 ```
 
-### Adding Translations
-To add a new language, extend the `translations` object:
+## Files Description
 
-```javascript
-const translations = {
-    en: { /* English translations */ },
-    de: { /* German translations */ },
-    fr: { /* Add French translations */ },
-};
-```
+### 1. `index.html`
+The main application interface that now references external JavaScript files instead of containing embedded data. This file can be updated without affecting your stored data.
 
-## 🤝 Contributing
+### 2. `parkrun-data.js`
+Handles all data storage and retrieval operations:
+- Manages volunteer assignments by week
+- Stores helper information (names and IDs)
+- Handles localStorage operations
+- Provides data export/import functionality
 
-We welcome contributions! Here's how you can help:
+### 3. `parkrun-config.js`
+Contains all configuration data:
+- List of volunteer roles
+- Translations for English and German
+- Helper functions for accessing translations
 
-### Reporting Issues
-- Use the GitHub Issues tab to report bugs
-- Include browser version, steps to reproduce, and expected vs actual behavior
+### 4. `backup-utility.html`
+A standalone tool for backing up and restoring your data:
+- Export all data as a JSON file
+- Import data from a previously exported backup
+- View statistics about your data
 
-### Suggesting Features
-- Check existing issues before creating new ones
-- Provide detailed use cases and benefits
+## Setup Instructions
 
-### Code Contributions
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. **Save all files in the same directory**
+   - Create a folder (e.g., `parkrun-organizer`)
+   - Save all four files in this folder
 
-### Translation Contributions
-- Native speakers welcome to improve or add translations
-- Ensure consistency with Parkrun terminology
+2. **Open the application**
+   - Open `index.html` in your web browser
+   - The application will automatically load the external JavaScript files
 
-## 📄 License
+3. **Existing data migration**
+   - If you have existing data from the old version, it will be automatically loaded
+   - The data structure remains the same, so no migration is needed
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Usage
 
-## 🙋‍♀️ Support
+### Regular Use
+1. Open `index.html` in your browser
+2. Select a week from the dropdown
+3. Assign helpers to volunteer roles
+4. Export team information via email
 
-### Getting Help
-- Check the [Issues](https://github.com/yourusername/parkrun-helper-organizer/issues) page for common problems
-- Create a new issue for bugs or feature requests
+### Backup Your Data
+1. Open `backup-utility.html` in your browser
+2. Click "Download Backup" to save your data as a JSON file
+3. Store this file safely for future restoration
 
-### Parkrun Resources
-- [Official Parkrun Website](https://www.parkrun.com/)
-- [Parkrun Volunteer Handbook](https://www.parkrun.com/volunteer/)
+### Restore Data
+1. Open `backup-utility.html` in your browser
+2. Click "Choose Backup File" and select your backup JSON file
+3. Review the file information
+4. Click "Import Data" to restore (this will replace existing data)
 
-## 🏆 Acknowledgments
+## Updating the Application
 
-- **Parkrun Community** - For inspiring this project
-- **Volunteer Coordinators** - For feedback and testing
-- **Contributors** - Thank you for your improvements and translations
+When you need to update the HTML interface:
 
-## 📊 Project Status
+1. **Before updating**: Create a backup using `backup-utility.html`
+2. Replace only the `index.html` file with the new version
+3. Keep `parkrun-data.js` and `parkrun-config.js` unchanged
+4. Your data will be preserved
 
-- ✅ **Stable**: Ready for production use
-- 🔄 **Actively Maintained**: Regular updates and bug fixes
-- 📈 **Growing**: New features added based on community feedback
+## Data Storage
 
----
+Data is stored in your browser's localStorage:
+- `parkrunHelperData`: Weekly volunteer assignments
+- `parkrunHelpers`: Helper database
+- `parkrunLanguage`: Language preference
 
-**Made with ❤️ for the Parkrun community**
+## Browser Compatibility
 
-*This is an unofficial tool created by volunteers for volunteers. Not affiliated with Parkrun Global.*
+- Works with all modern browsers (Chrome, Firefox, Safari, Edge)
+- Data is stored locally in each browser
+- Data is not shared between different browsers or devices
+
+## Tips
+
+1. **Regular Backups**: Use the backup utility weekly or before major updates
+2. **Multiple Browsers**: If you use multiple browsers, export/import data to sync
+3. **Sharing Data**: Export your data and share the JSON file with other organizers
+
+## Troubleshooting
+
+**Data not loading?**
+- Ensure all JavaScript files are in the same directory as `index.html`
+- Check browser console for errors (F12 → Console tab)
+- Try clearing browser cache and reloading
+
+**Lost data after update?**
+- Check if old `index.html` had embedded data
+- Use browser developer tools to inspect localStorage
+- Restore from a backup if available
+
+**Import not working?**
+- Ensure the backup file is a valid JSON file
+- Check that the file contains both `parkrunData` and `helpersDatabase`
+- Try creating a fresh backup and comparing the structure
