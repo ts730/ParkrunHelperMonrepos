@@ -948,14 +948,14 @@
             </div>
 
             <div class="week-selector">
-                <div class="week-selector-label" data-i18n="selectWeek">
+                <div class="week-selector-label">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                         <line x1="16" y1="2" x2="16" y2="6"/>
                         <line x1="8" y1="2" x2="8" y2="6"/>
                         <line x1="3" y1="10" x2="21" y2="10"/>
                     </svg>
-                    Select Week
+                    <span data-i18n="selectWeek">Select Week</span>
                 </div>
                 <select id="weekSelect" onchange="loadWeekData()">
                     <!-- Options will be populated by JavaScript -->
@@ -1058,8 +1058,8 @@
     <script src="parkrun-data.js"></script>
     
     <script>
-        // Current language (now loaded from ParkrunData)
-        let currentLanguage = ParkrunData.getLanguage();
+        // Current language (will be loaded from ParkrunData)
+        let currentLanguage = 'en';
 
         // Page navigation
         function showMainView() {
@@ -1117,14 +1117,42 @@
             const year = today.getFullYear();
             const endOfYear = new Date(year, 11, 31);
             
-            // Find next Saturday
+            // Find next Saturday (including today if it's Saturday)
             let current = new Date(today);
-            const daysUntilSaturday = (6 - current.getDay() + 7) % 7 || 7;
-            current.setDate(current.getDate() + daysUntilSaturday);
+            const dayOfWeek = current.getDay();
             
+            // If today is not Saturday, find the next Saturday
+            if (dayOfWeek !== 6) {
+                const daysUntilSaturday = (6 - dayOfWeek + 7) % 7;
+                current.setDate(current.getDate() + daysUntilSaturday);
+            }
+            
+            // Add all Saturdays from current until end of year
             while (current <= endOfYear) {
                 saturdays.push(new Date(current));
                 current.setDate(current.getDate() + 7);
+            }
+            
+            // If no Saturdays found (e.g., end of year), add next year's Saturdays
+            if (saturdays.length === 0) {
+                const nextYear = year + 1;
+                const endOfNextYear = new Date(nextYear, 11, 31);
+                current = new Date(nextYear, 0, 1);
+                
+                // Find first Saturday of next year
+                const firstDayOfYear = current.getDay();
+                if (firstDayOfYear !== 6) {
+                    const daysUntilSaturday = (6 - firstDayOfYear + 7) % 7;
+                    current.setDate(current.getDate() + daysUntilSaturday);
+                }
+                
+                // Add Saturdays for next year (limit to 52 weeks)
+                let weeksAdded = 0;
+                while (current <= endOfNextYear && weeksAdded < 52) {
+                    saturdays.push(new Date(current));
+                    current.setDate(current.getDate() + 7);
+                    weeksAdded++;
+                }
             }
             
             return saturdays;
@@ -1149,6 +1177,10 @@
             select.innerHTML = '';
             const saturdays = getSaturdays();
             
+            if (saturdays.length === 0) {
+                return;
+            }
+            
             saturdays.forEach(saturday => {
                 const option = document.createElement('option');
                 option.value = dateToKey(saturday);
@@ -1156,8 +1188,11 @@
                 select.appendChild(option);
             });
             
-            if (currentValue) {
+            // Restore previous value if it exists, otherwise select first option
+            if (currentValue && Array.from(select.options).some(opt => opt.value === currentValue)) {
                 select.value = currentValue;
+            } else if (select.options.length > 0) {
+                select.value = select.options[0].value;
             }
         }
 
@@ -1222,6 +1257,10 @@
         // Update missing positions alert
         function updateMissingPositionsAlert() {
             const selectedWeek = document.getElementById('weekSelect').value;
+            if (!selectedWeek) {
+                return;
+            }
+            
             const weekData = ParkrunData.getWeekData(selectedWeek);
             
             const missingRoles = [];
@@ -1232,6 +1271,9 @@
             });
             
             const alertContainer = document.getElementById('missingPositionsAlert');
+            if (!alertContainer) {
+                return;
+            }
             
             if (missingRoles.length === 0) {
                 alertContainer.innerHTML = `
@@ -1268,6 +1310,10 @@
         // Load data for selected week
         function loadWeekData() {
             const selectedWeek = document.getElementById('weekSelect').value;
+            if (!selectedWeek) {
+                return;
+            }
+            
             const weekData = ParkrunData.getWeekData(selectedWeek);
             
             const selects = document.querySelectorAll('.helper-select');
@@ -1511,8 +1557,15 @@
 
         // Initialize on load
         window.onload = function() {
+            // Initialize data
+            if (typeof ParkrunData !== 'undefined') {
+                ParkrunData.init();
+                currentLanguage = ParkrunData.getLanguage();
+            }
+            
             // Set initial language button state
             document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
                 if (btn.textContent.toLowerCase() === currentLanguage) {
                     btn.classList.add('active');
                 }
@@ -1521,7 +1574,12 @@
             updateTranslations();
             populateWeekSelector();
             createVolunteerRows();
-            loadWeekData();
+            
+            // Load week data if we have weeks
+            const weekSelect = document.getElementById('weekSelect');
+            if (weekSelect && weekSelect.options.length > 0) {
+                loadWeekData();
+            }
         };
 
         // Update week selector when language changes
